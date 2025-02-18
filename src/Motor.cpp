@@ -18,11 +18,24 @@ void Motor::begin() {
     digitalWrite(enablePin,HIGH);
 }
 
+void Motor::stop() {
+    ledcWrite(pwmChannel, 255); // Send MAX value instead of 0 (inverted logic)
+    digitalWrite(dirPin, LOW);
+    digitalWrite(enablePin,LOW);
+    return;
+}
+
 void Motor::setSpeed(int speed) {
     speed = constrain(speed, -maxPwm, maxPwm);
-    ledcWrite(pwmChannel, abs(speed));
-    uint8_t direction = LOW*(speed < 0) + HIGH*(speed >= 0);
-    digitalWrite(dirPin,direction);
-    analogWrite(pwmPin, abs(speed));
+    if (abs(speed) == 0) {
+        Serial.println("stop");
+        stop();
+        return;
+    }
+    Serial.print("speed "); Serial.println(speed);
+    digitalWrite(enablePin,HIGH);
+    ledcWrite(pwmChannel, 255-abs(speed));
+    digitalWrite(dirPin,speed > 0 ? LOW : HIGH);
+    analogWrite(pwmPin, int(abs(speed)));
 }
 

@@ -11,6 +11,7 @@ private:
   int maxPwm; 
   int pwmChannel;
   int enablePin;
+  void stop();
 
 public:
   Motor(int pwm, int dir, int enable, int max, int channel);

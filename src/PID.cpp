@@ -12,11 +12,13 @@ PID::PID(float p, float i, float d) {
 }
 
 float PID::compute(float measured, uint64_t dt) {
+    float newdt = dt / 1e6;
+    // Serial.print(newdt); Serial.print(" ");
     float error = reference_ - measured;
-    integral += error * dt;
-    float derivative = (error - prevError) / dt;
+    integral += error * newdt;
+    float derivative = (error - prevError) / newdt;
     prevError = error;
-
+    // Serial.print(" pe: "); Serial.print(prevError);
     return Kp * error + Ki * integral + Kd * derivative;
 }
 void PID::setReference(float reference) {
