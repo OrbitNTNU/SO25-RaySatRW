@@ -9,13 +9,15 @@ Motor::Motor(int pwm, int dir,int enable, int max, int channel) {
 }
 
 void Motor::begin() {
-    pinMode(dirPin, OUTPUT);
     pinMode(enablePin, OUTPUT);
+    digitalWrite(enablePin,LOW);
+    
+    pinMode(dirPin, OUTPUT);
     // Setup PWM channel
     ledcSetup(pwmChannel, 5000, 8); 
     ledcAttachPin(pwmPin, pwmChannel);
     // Enable motor (HIGH = Enabled, LOW = Disabled)
-    digitalWrite(enablePin,HIGH);
+    // stop();
 }
 
 void Motor::stop() {
@@ -28,14 +30,12 @@ void Motor::stop() {
 void Motor::setSpeed(int speed) {
     speed = constrain(speed, -maxPwm, maxPwm);
     if (abs(speed) == 0) {
-        Serial.println("stop");
         stop();
         return;
     }
-    Serial.print("speed "); Serial.println(speed);
-    digitalWrite(enablePin,HIGH);
     ledcWrite(pwmChannel, 255-abs(speed));
     digitalWrite(dirPin,speed > 0 ? LOW : HIGH);
-    analogWrite(pwmPin, int(abs(speed)));
+    // analogWrite(pwmPin, int(abs(speed)));
+    digitalWrite(enablePin,HIGH);
 }
 

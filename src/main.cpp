@@ -11,9 +11,9 @@
 #define MAX_PWM 50  
 
 // PID-konstanter (juster disse for å finstemme styringen)
-#define Kp 1.0
-#define Ki 1.0
-#define Kd 0.0
+#define Kp 10.0
+#define Ki 2.0
+#define Kd 1.0
 
 MPU6050Sensor sensor;
 Motor motor(PWM_PIN, DIR_PIN,ENABLE_PIN, MAX_PWM,0);
@@ -22,8 +22,8 @@ Klokke klokke(1);
 
 void setup() {
     Serial.begin(115200);
-    sensor.begin();  // Start og kalibrer gyroskopet
     motor.begin();   // Sett opp motorpinner
+    sensor.begin();  // Start og kalibrer gyroskopet
     delay(100);
 }
 
