@@ -7,10 +7,12 @@ class PID {
 private:
     float Kp, Ki, Kd;
     float prevError, integral, reference_;
-    
+    int outputMax, outputMin;
+    float prevOutput;
+    float lowPass(float e);
 
 public:
-    PID(float p, float i, float d);
+    PID(float p, float i, float d, int outputMax);
     float compute(float measured, uint64_t dt);
     void setReference(float reference);
 };

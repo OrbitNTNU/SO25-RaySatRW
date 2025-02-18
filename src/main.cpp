@@ -11,13 +11,13 @@
 #define MAX_PWM 50  
 
 // PID-konstanter (juster disse for å finstemme styringen)
-#define Kp 10.0
-#define Ki 2.0
-#define Kd 1.0
+#define Kp 100.0
+#define Ki 20.0
+#define Kd 10.0
 
 MPU6050Sensor sensor;
 Motor motor(PWM_PIN, DIR_PIN,ENABLE_PIN, MAX_PWM,0);
-PID pid(Kp, Ki, Kd);
+PID pid(Kp, Ki, Kd,MAX_PWM);
 Klokke klokke(1);
 
 void setup() {
@@ -55,5 +55,5 @@ void loop() {
     // Serial.print(" | PID Output: ");
     // Serial.println(pidOutput);
 
-    delay(100);  // Kjør loopen raskt for responsiv kontroll
+    delay(50);  // Kjør loopen raskt for responsiv kontroll
 }

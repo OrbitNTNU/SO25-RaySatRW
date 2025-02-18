@@ -34,7 +34,8 @@ void Motor::setSpeed(int speed) {
         return;
     }
     ledcWrite(pwmChannel, 255-abs(speed));
-    digitalWrite(dirPin,speed > 0 ? LOW : HIGH);
+    // FIXME: < must be switched to >, this is like this for testing
+    digitalWrite(dirPin,speed < 0 ? LOW : HIGH); 
     // analogWrite(pwmPin, int(abs(speed)));
     digitalWrite(enablePin,HIGH);
 }
