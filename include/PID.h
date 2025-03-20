@@ -7,7 +7,7 @@ class PID {
 private:
     float Kp, Ki, Kd;
     float prevError, integral, reference_;
-    int outputMax, outputMin;
+    int outputMax_, outputMin;
     float prevOutput;
     float lowPass(float e);
 

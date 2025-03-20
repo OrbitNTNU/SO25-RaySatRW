@@ -9,7 +9,7 @@ PID::PID(float p, float i, float d, int outputMax) {
     reference_ = 0;
     prevError = 0;
     integral = 0;
-    outputMax = outputMax;
+    outputMax_ = outputMax;
     outputMin = -outputMax;    
 }
 #define LOW_PASS_ALPHA 0.5
@@ -21,12 +21,14 @@ float PID::compute(float measured, uint64_t dt) {
     // Serial.print(newdt); Serial.print(" ");
     float error = lowPass(reference_ - measured);
     // If not in saturation, integrate
-    if (prevOutput < outputMax && prevOutput > outputMin) {
+    if (prevOutput < outputMax_ && prevOutput > outputMin) {
         integral += error * newdt;
+       
+        
     }
+    
     float derivative = (error - prevError) / newdt;
     prevError = error;
-    // Serial.print(" pe: "); Serial.print(prevError);
     return Kp * error + Ki * integral + Kd * derivative;
 }
 void PID::setReference(float reference) {
