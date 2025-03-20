@@ -12,7 +12,7 @@
 #define OBC_PIN 13 
 
 // PID-konstanter //kan fintunes mer? 
-#define Kp 80.0
+#define Kp 30.0
 #define Ki 5.0
 #define Kd 1.0
 
@@ -35,14 +35,12 @@ void loop() {
         return;
     }
     
-
     //sjekker signal fra OBC, høyt signal skrur av motoren (også overflatisk, gjøres allerede i checkAndStop())
-    if (digitalRead(OBC_PIN) == HIGH) {
-        motor.stop();
-        return;
-    }
+    // if (digitalRead(OBC_PIN) == HIGH) {
+    //     motor.stop();
+    //     return;
+    // }
     
-
     float gyroZ = sensor.getGyroZ(); // [rad/s]
     uint64_t dt = klokke.getDT(); 
     float u = pid.compute(gyroZ, dt);  // PID-kontroller beregner pådrag

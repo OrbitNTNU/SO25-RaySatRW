@@ -5,3 +5,5 @@
 .vscode/ipch
 Reaction Wheel.code-workspace
 extensions.json
+test.cpp
+*.code-workspace

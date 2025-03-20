@@ -9,6 +9,7 @@ enum MotorState {
   RUNNING,
   SATURATED,
   PERMANENTLY_STOPPED,
+  TEMPORARILY_STOPPED,
 };
 
 class Motor {
