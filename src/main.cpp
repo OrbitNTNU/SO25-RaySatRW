@@ -12,7 +12,7 @@
 #define OBC_PIN 13 
 
 // PID-konstanter //kan fintunes mer? 
-#define Kp 30.0
+#define Kp 50.0
 #define Ki 5.0
 #define Kd 1.0
 

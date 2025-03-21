@@ -8,7 +8,7 @@ Motor::Motor(int pwm, int dir, int enable, int max, int channel, int obc) : klok
     obcPin = obc;
     enablePin = enable;
     pwmChannel = channel;
-    maxTime = 120; // makstid i minutter, motor skrur seg av etter maxTime, og går ikke på igjen
+    maxTime = 60; // makstid i minutter, motor skrur seg av etter maxTime, og går ikke på igjen
     startTid = 0;
     stoppTid = 0; //sjekker når motor stopper
     satStart = 0;
@@ -52,7 +52,7 @@ void Motor::setSpeed(int speed) {
         if (satStart == 0) {
             satStart = klokke.getTime();
         }
-        if (klokke.getTime() - satStart >= 2e6) {
+        if (klokke.getTime() - satStart >= 5e6) {
             state = SATURATED;
             stop();
             stoppTid = klokke.getTime();
@@ -86,20 +86,24 @@ bool Motor::checkAndStop() {
     
     // sjekker om signal fra OBC er høyt
     if (digitalRead(obcPin) == HIGH) {
-        stop();
-        state = TEMPORARILY_STOPPED;
-        Serial.println("\tstate: TEMPORARILY STOPPED, obc signal detected");
+        if (state != TEMPORARILY_STOPPED) {
+            stop();
+            state = TEMPORARILY_STOPPED;
+            Serial.println("\tstate: TEMPORARILY STOPPED, obc signal detected");
+        }
+       
         return true;
     // skrur på motor igjen dersom signal fra OBC blir lavt igjen
-    } else if ((state == TEMPORARILY_STOPPED) && digitalRead(obcPin == LOW)) {
+    } else if (state == TEMPORARILY_STOPPED) {
         state = RUNNING;
         Serial.println("state: running again, low signal from obc detected");
         begin();
+        return false;
     }
    
     // sjekker om motor er i metning
     if (state == SATURATED) {
-        if (klokke.getTime() - stoppTid >= 60e6) {
+        if (klokke.getTime() - stoppTid >= 120e6) {
             state = RUNNING;
             Serial.println("\tState: RUNNING -> recovered from saturation");
            begin();
